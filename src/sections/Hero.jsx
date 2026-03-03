@@ -4,8 +4,11 @@ import DecryptedText from '@/components/DecryptedText';
 import ShinyText from '@/components/ShinyText';
 import Aurora from '@/components/Aurora';
 import { Github, Linkedin, Mail, FileDown } from 'lucide-react';
+import { useSiteData } from '@/lib/data';
 
 export default function Hero() {
+  const { hero } = useSiteData();
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Aurora background */}
@@ -34,14 +37,14 @@ export default function Hero() {
             animationSpeed={6}
             className="text-6xl md:text-8xl font-extrabold leading-tight"
           >
-            YhaZt
+            {hero.name}
           </GradientText>
         </div>
 
         {/* Title */}
         <div className="mb-8">
           <SplitText
-            text="Full Stack Developer"
+            text={hero.title}
             className="text-2xl md:text-3xl font-light text-muted-foreground"
             delay={40}
             duration={0.8}
@@ -51,7 +54,7 @@ export default function Hero() {
         {/* Tagline */}
         <div className="mb-12">
           <DecryptedText
-            text="Building modern web experiences with passion and precision"
+            text={hero.tagline}
             animateOn="view"
             speed={30}
             className="text-lg text-muted-foreground/80"
@@ -68,6 +71,17 @@ export default function Hero() {
           >
             View Projects
           </a>
+          {hero.resume_url && (
+            <a
+              href={hero.resume_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3 border border-border rounded-full text-foreground font-medium hover:bg-secondary transition-all hover:scale-105 inline-flex items-center gap-2"
+            >
+              <FileDown size={18} />
+              Download Resume
+            </a>
+          )}
           <a
             href="#links"
             className="px-8 py-3 border border-border rounded-full text-foreground font-medium hover:bg-secondary transition-all hover:scale-105"
@@ -78,7 +92,7 @@ export default function Hero() {
 
         {/* Social icons */}
         <div className="flex items-center justify-center gap-6 mt-12">
-          <a href="https://github.com/YhaZt" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200">
+          <a href={hero.github_url || 'https://github.com/YhaZt'} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200">
             <Github size={22} />
           </a>
           <a href="#links" className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200">
@@ -87,13 +101,6 @@ export default function Hero() {
           <a href="#links" className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform duration-200">
             <Mail size={22} />
           </a>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex items-start justify-center p-1">
-            <div className="w-1.5 h-3 bg-muted-foreground/50 rounded-full animate-pulse" />
-          </div>
         </div>
       </div>
     </section>

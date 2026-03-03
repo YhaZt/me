@@ -1,77 +1,26 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import AnimatedContent from '@/components/AnimatedContent';
 import ScrollFloat from '@/components/ScrollFloat';
 import SpotlightCard from '@/components/SpotlightCard';
 import ShinyText from '@/components/ShinyText';
 import { ExternalLink, Github, ChevronRight } from 'lucide-react';
-
-// Sample projects - replace with your actual projects
-const projects = [
-  {
-    title: 'Project One',
-    description: 'A full-stack web application built with React, Node.js, and PostgreSQL. Features real-time updates, authentication, and a modern dashboard.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'Express'],
-    image: null,
-    liveUrl: '#',
-    githubUrl: '#',
-    featured: true,
-  },
-  {
-    title: 'Project Two',
-    description: 'E-commerce platform built with Vue.js and Laravel. Includes payment integration, inventory management, and admin panel.',
-    tags: ['Vue', 'Laravel', 'MySQL', 'Stripe'],
-    image: null,
-    liveUrl: '#',
-    githubUrl: '#',
-    featured: true,
-  },
-  {
-    title: 'Project Three',
-    description: 'Mobile-first application using Quasar framework with Firebase backend. Real-time chat, push notifications, and offline support.',
-    tags: ['Quasar', 'Firebase', 'PWA'],
-    image: null,
-    liveUrl: '#',
-    githubUrl: '#',
-    featured: true,
-  },
-  {
-    title: 'Project Four',
-    description: 'REST API service built with CodeIgniter 4 and MongoDB. High-performance data processing with caching layer.',
-    tags: ['CodeIgniter 4', 'MongoDB', 'Redis'],
-    image: null,
-    liveUrl: '#',
-    githubUrl: '#',
-    featured: false,
-  },
-  {
-    title: 'Project Five',
-    description: 'Cloud-deployed application on Digital Ocean with Supabase backend. Features real-time subscriptions and edge functions.',
-    tags: ['React', 'Supabase', 'Digital Ocean'],
-    image: null,
-    liveUrl: '#',
-    githubUrl: '#',
-    featured: false,
-  },
-  {
-    title: 'Project Six',
-    description: 'Portfolio and blog platform with CMS integration. Server-side rendered with optimized performance and SEO.',
-    tags: ['React', 'Node.js', 'PostgreSQL'],
-    image: null,
-    liveUrl: '#',
-    githubUrl: '#',
-    featured: false,
-  },
-];
-
-const filters = ['All', 'React', 'Vue', 'Laravel', 'Node.js', 'Firebase', 'Supabase'];
+import { useSiteData } from '@/lib/data';
 
 export default function Projects() {
+  const { projects } = useSiteData();
   const [activeFilter, setActiveFilter] = useState('All');
   const [showAll, setShowAll] = useState(false);
 
+  // Build filters dynamically from project tags
+  const filters = useMemo(() => {
+    const tagSet = new Set();
+    projects.forEach(p => (p.tags || []).forEach(t => tagSet.add(t)));
+    return ['All', ...Array.from(tagSet)];
+  }, [projects]);
+
   const filteredProjects = activeFilter === 'All'
     ? projects
-    : projects.filter((p) => p.tags.includes(activeFilter));
+    : projects.filter((p) => (p.tags || []).includes(activeFilter));
 
   const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 3);
 
@@ -117,11 +66,15 @@ export default function Projects() {
                 className="group p-0 rounded-2xl bg-card border border-border overflow-hidden h-full flex flex-col"
                 spotlightColor="rgba(59, 130, 246, 0.1)"
               >
-                {/* Project Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-primary/20 via-purple-500/10 to-transparent flex items-center justify-center border-b border-border">
-                  <span className="text-4xl font-bold text-primary/30 group-hover:text-primary/50 transition-colors">
-                    {project.title.split(' ').map(w => w[0]).join('')}
-                  </span>
+                {/* Project Image */}
+                <div className="h-48 bg-gradient-to-br from-primary/20 via-purple-500/10 to-transparent flex items-center justify-center border-b border-border overflow-hidden">
+                  {project.image_url ? (
+                    <img src={project.image_url} alt={project.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-4xl font-bold text-primary/30 group-hover:text-primary/50 transition-colors">
+                      {project.title.split(' ').map(w => w[0]).join('')}
+                    </span>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -138,7 +91,7 @@ export default function Projects() {
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag) => (
+                    {(project.tags || []).map((tag) => (
                       <span
                         key={tag}
                         className="px-2 py-0.5 text-xs rounded-md bg-secondary text-muted-foreground"
@@ -151,7 +104,7 @@ export default function Projects() {
                   {/* Links */}
                   <div className="flex items-center gap-4 pt-2 border-t border-border">
                     <a
-                      href={project.liveUrl}
+                      href={project.live_url || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -160,7 +113,7 @@ export default function Projects() {
                       <span>Live Demo</span>
                     </a>
                     <a
-                      href={project.githubUrl}
+                      href={project.github_url || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"

@@ -2,9 +2,9 @@ import { Github, Heart } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="py-12 px-6 border-t border-border">
+    <footer className="py-12 pb-28 px-6 border-t border-border">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col items-center gap-6 text-center">
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
             <span>Built with</span>
             <Heart size={14} className="text-red-500 fill-red-500" />
@@ -31,7 +31,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="text-center mt-8 text-xs text-muted-foreground/50">
+        <div className="text-center mt-6 text-xs text-muted-foreground/50">
           &copy; {new Date().getFullYear()} YhaZt. All rights reserved.
         </div>
       </div>

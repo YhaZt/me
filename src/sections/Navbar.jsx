@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const navLinks = [
   { label: 'Home', href: '#hero' },
@@ -30,16 +31,19 @@ export default function Navbar() {
         <a href="#hero" className="text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors">
           YhaZt<span className="text-primary">.</span>
         </a>
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <ThemeToggle />
         </div>
       </div>
     </nav>

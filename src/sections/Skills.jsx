@@ -2,63 +2,18 @@ import AnimatedContent from '@/components/AnimatedContent';
 import ScrollFloat from '@/components/ScrollFloat';
 import SpotlightCard from '@/components/SpotlightCard';
 import LogoLoop from '@/components/LogoLoop';
-
-// Skill categories with icons (using simple SVG or text-based logos)
-const skillCategories = [
-  {
-    title: 'Frontend',
-    color: 'rgba(59, 130, 246, 0.15)',
-    skills: [
-      { name: 'React', icon: '⚛️', level: 90 },
-      { name: 'Vue', icon: '💚', level: 85 },
-      { name: 'Quasar', icon: '🔷', level: 80 },
-    ],
-  },
-  {
-    title: 'Backend',
-    color: 'rgba(34, 197, 94, 0.15)',
-    skills: [
-      { name: 'Node.js', icon: '🟢', level: 88 },
-      { name: 'Express', icon: '⚡', level: 85 },
-      { name: 'Laravel', icon: '🔴', level: 82 },
-      { name: 'CodeIgniter 4', icon: '🔥', level: 80 },
-    ],
-  },
-  {
-    title: 'Cloud & BaaS',
-    color: 'rgba(249, 115, 22, 0.15)',
-    skills: [
-      { name: 'Firebase', icon: '🔶', level: 85 },
-      { name: 'Supabase', icon: '⚡', level: 82 },
-      { name: 'Digital Ocean', icon: '🌊', level: 78 },
-    ],
-  },
-  {
-    title: 'Databases',
-    color: 'rgba(168, 85, 247, 0.15)',
-    skills: [
-      { name: 'PostgreSQL', icon: '🐘', level: 85 },
-      { name: 'MongoDB', icon: '🍃', level: 82 },
-    ],
-  },
-];
-
-const techLogos = [
-  { node: <span className="text-2xl font-bold text-blue-400">React</span> },
-  { node: <span className="text-2xl font-bold text-green-400">Vue</span> },
-  { node: <span className="text-2xl font-bold text-cyan-400">Quasar</span> },
-  { node: <span className="text-2xl font-bold text-green-500">Node.js</span> },
-  { node: <span className="text-2xl font-bold text-gray-300">Express</span> },
-  { node: <span className="text-2xl font-bold text-red-500">Laravel</span> },
-  { node: <span className="text-2xl font-bold text-orange-500">CI4</span> },
-  { node: <span className="text-2xl font-bold text-amber-400">Firebase</span> },
-  { node: <span className="text-2xl font-bold text-emerald-400">Supabase</span> },
-  { node: <span className="text-2xl font-bold text-blue-500">DO</span> },
-  { node: <span className="text-2xl font-bold text-blue-300">Postgres</span> },
-  { node: <span className="text-2xl font-bold text-green-400">MongoDB</span> },
-];
+import { useSiteData } from '@/lib/data';
 
 export default function Skills() {
+  const { skillCategories } = useSiteData();
+
+  // Build logo loop from skill categories
+  const techLogos = skillCategories.flatMap(cat =>
+    cat.skills.map(s => ({
+      node: <span className="text-2xl font-bold text-foreground/70">{s.name}</span>,
+    }))
+  );
+
   return (
     <section id="skills" className="py-32 px-6">
       <div className="max-w-6xl mx-auto">
@@ -90,7 +45,7 @@ export default function Skills() {
         {/* Skill Cards */}
         <div className="grid md:grid-cols-2 gap-6">
           {skillCategories.map((category, catIndex) => (
-            <AnimatedContent key={category.title} distance={50} delay={catIndex * 0.15}>
+            <AnimatedContent key={category.id || category.title} distance={50} delay={catIndex * 0.15}>
               <SpotlightCard
                 className="p-6 rounded-2xl bg-card border border-border h-full"
                 spotlightColor={category.color}
